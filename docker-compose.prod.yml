@@ -1,12 +1,5 @@
 version: '3'
 services:
-  mongo:
-    image: mongo:4.4
-    ports:
-      - 27017:27017
-    volumes:
-      - mongodb:/data/db
-      - mongodb_config:/data/configdb
   pisignage-server:
     build:
       context: .
@@ -15,11 +8,7 @@ services:
     volumes:
       - media:/media
       - data:/data
-    depends_on:
-      - mongo
 
 volumes:
-  mongodb:
-  mongodb_config:
   media:
   data:
