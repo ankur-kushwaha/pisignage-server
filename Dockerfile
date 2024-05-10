@@ -17,4 +17,4 @@ RUN npm install --production
 COPY . .
 RUN chmod +x ./wait-for-it.sh
 
-RUN node server.js
+CMD [ "./wait-for-it.sh", "--", "node", "server.js"]

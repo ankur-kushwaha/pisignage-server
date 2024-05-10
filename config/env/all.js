@@ -4,8 +4,8 @@
 var path = require('path');
 
 var rootPath = process.cwd(),
-    dataDir = path.join(rootPath, '/data'),
-    assetDir = path.join(rootPath, '/../media');
+    dataDir = path.join(rootPath, '/../mount/data'),
+    assetDir = path.join(rootPath, '/../mount/media');
 // var rootPath = process.cwd(),                     //for docker only
 //     dataDir = path.join('/data'),
 //     assetDir = path.join('/media');
