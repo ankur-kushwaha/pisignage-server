@@ -3,9 +3,9 @@
 module.exports = {
     env: 'development',
     https: false,
-    port: process.env.PORT || 3000,
+    port: process.env.PORT || 4000,
     mongo: {
         uri: process.env.MONGOLAB_URI ||
-            'mongodb://127.0.0.1:27017/pisignage-server-dev'
+            'mongodb+srv://ankur:ankur@cluster0.wgb6k.mongodb.net/pisignage-server-dev?retryWrites=true&w=majority&appName=Cluster0'
     }
 };

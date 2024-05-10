@@ -27,6 +27,12 @@ mongoose.connect(config.mongo.uri,function(error){
         process.exit(1);
     }
 });
+
+fs.mkdir(config.dataDir, function(err) {
+    if (err && (err.code != 'EEXIST')) {
+        console.log("Error creating logs directory, "+err.code)
+    }
+});
 //create docker directories if needed
 fs.mkdir(config.releasesDir, function(err) {
     if (err && (err.code != 'EEXIST')) {
