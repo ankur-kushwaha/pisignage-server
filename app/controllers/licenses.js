@@ -13,7 +13,7 @@ var	config = require('../../config/config'),
 
 var mongoose = require('mongoose'),
     Settings = mongoose.model('Settings'),
-    settingsModel = null;
+    settingsModel = new Settings();
 
 var licenseDir = config.licenseDirPath
 
@@ -74,7 +74,7 @@ exports.deleteLicense = function(req,res){ // delete particular license and retu
 }
 
 exports.getSettingsModel = function(cb) {
-    Settings.findOne({}, {}, { sort: { 'created_at' : -1 } },function (err, settings) {
+    Settings.findOne({}, {}, { sort: { '__v' : 1 } },function (err, settings) {
         if (err || !settings) {
             if (settingsModel) {
                 cb(null, settingsModel)
