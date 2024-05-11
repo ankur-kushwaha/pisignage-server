@@ -64,7 +64,7 @@ var defaultGroup = {_id: 0, name: 'default'};
 licenses.getSettingsModel(function(err,data){
     settings = data;
     installation = settings.installation || "local"
-    console.log({installation})
+    console.log({data,installation})
 
     Group.update({name:"default"},{name:"default",description:"Default group for Players"},{upsert:true},function(err){
         fs.mkdir(path.join(config.syncDir,installation), function (err) {
