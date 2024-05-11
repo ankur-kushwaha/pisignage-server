@@ -74,13 +74,13 @@ exports.deleteLicense = function(req,res){ // delete particular license and retu
 }
 
 exports.getSettingsModel = function(cb) {
-    Settings.findOne(function (err, settings) {
+    Settings.findOne({}, {}, { sort: { 'created_at' : -1 } },function (err, settings) {
         if (err || !settings) {
             if (settingsModel) {
                 cb(null, settingsModel)
             } else {
-                settingsModel = new Settings();
-                settingsModel.save(cb);
+                // settingsModel = new Settings();
+                // settingsModel.save(cb);
             }
         } else {
             cb(null,settings);
