@@ -115,6 +115,7 @@ exports.updateDisconnectEvent = function(socketId, reason) {
 }
 
 var sendConfig = function (player, group, periodic) {
+    
     var retObj = {};
 
     var groupPlaylists,
@@ -215,6 +216,7 @@ var sendConfig = function (player, group, periodic) {
         retObj.sshPassword = settings.sshPassword;
     retObj.currentTime = Date.now();
     var socketio = (player.webSocket?webSocket:(player.newSocketIo?newSocketio:oldSocketio));
+    console.log({retObj})
     socketio.emitMessage(player.socket, 'config', retObj);
 }
 
@@ -422,56 +424,59 @@ exports.updatePlayerStatus = function (obj) {
     if (updatePlayerCount[obj.cpuSerialNumber] > perDayCount) {
         updatePlayerCount[obj.cpuSerialNumber] = 0;
     }
-
-    Player.findOne({cpuSerialNumber: obj.cpuSerialNumber}, function (err, data) {
-        if (err) {
-            console.log("Error while retriving player data: " + err);
-        } else {
-            var player;
-            if (data) {
-                if (!obj.lastUpload || (obj.lastUpload < data.lastUpload))
-                    delete obj.lastUpload;
-                if (!obj.name || obj.name.length == 0)
-                    delete obj.name;
-                player = _.extend(data, obj)
-                if (!player.isConnected) {
+    licenses.getSettingsModel(function(err,data){
+        settings = data;
+        installation = settings.installation || "local"
+        Player.findOne({cpuSerialNumber: obj.cpuSerialNumber}, function (err, data) {
+            if (err) {
+                console.log("Error while retriving player data: " + err);
+            } else {
+                var player;
+                if (data) {
+                    if (!obj.lastUpload || (obj.lastUpload < data.lastUpload))
+                        delete obj.lastUpload;
+                    if (!obj.name || obj.name.length == 0)
+                        delete obj.name;
+                    player = _.extend(data, obj)
+                    if (!player.isConnected) {
+                        player.isConnected = true;
+                    }
+                } else {
+                    player = new Player(obj);
+                    player.group = defaultGroup;
+                    player.installation = installation;
                     player.isConnected = true;
                 }
-            } else {
-                player = new Player(obj);
-                player.group = defaultGroup;
-                player.installation = installation;
-                player.isConnected = true;
-            }
-            //server license feature, disable communication if server license is not available
-            if (player.serverServiceDisabled)
-                player.socket = null;
+                //server license feature, disable communication if server license is not available
+                if (player.serverServiceDisabled)
+                    player.socket = null;
 
-            activePlayers[player._id.toString()] = true;
-            if (!player.registered || obj.request ) {
-                Group.findById(player.group._id, function (err, group) {
-                    if (!err && group) {
-                        var now = Date.now(),
-                            pid = player._id.toString();
-                        //throttle messages
-                        if (!lastCommunicationFromPlayers[pid] || (now - lastCommunicationFromPlayers[pid]) > 60000 ||
-                            obj.priority) {
-                            lastCommunicationFromPlayers[pid] = now;
-                            sendConfig(player,group, (updatePlayerCount[obj.cpuSerialNumber] === 1));
+                activePlayers[player._id.toString()] = true;
+                if (!player.registered || obj.request ) {
+                    Group.findById(player.group._id, function (err, group) {
+                        if (!err && group) {
+                            var now = Date.now(),
+                                pid = player._id.toString();
+                            //throttle messages
+                            if (!lastCommunicationFromPlayers[pid] || (now - lastCommunicationFromPlayers[pid]) > 60000 ||
+                                obj.priority) {
+                                lastCommunicationFromPlayers[pid] = now;
+                                sendConfig(player,group, (updatePlayerCount[obj.cpuSerialNumber] === 1));
+                            } else {
+                                //console.log("communication to "+player.name+" at "+now+", last "+ lastCommunicationFromPlayers[pid]+" did not happen")
+                            }
                         } else {
-                            //console.log("communication to "+player.name+" at "+now+", last "+ lastCommunicationFromPlayers[pid]+" did not happen")
+                            console.log("unable to find group for the player");
                         }
-                    } else {
-                        console.log("unable to find group for the player");
-                    }
-                })
-            }
-            player.save(function (err, player) {
-                if (err) {
-                    return console.log("Error while saving player status: " + err);
+                    })
                 }
-            });
-        }
+                player.save(function (err, player) {
+                    if (err) {
+                        return console.log("Error while saving player status: " + err);
+                    }
+                });
+            }
+        })
     })
 }
 
