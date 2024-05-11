@@ -70,7 +70,7 @@ exports.deleteLicense = function(req,res){ // delete particular license and retu
 
 			return rest.sendSuccess(res,"License "+req.params['filename']+" deleted successfuly",files);
 		});
-	})
+	}) 
 }
 
 exports.getSettingsModel = function(cb) {
