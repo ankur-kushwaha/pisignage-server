@@ -75,13 +75,12 @@ exports.deleteLicense = function(req,res){ // delete particular license and retu
 
 exports.getSettingsModel = function(cb) {
     Settings.findOne({}, {}, { sort: { '__v' : 1 } },function (err, settings) {
-        console.log('settings',settings)
         if (err || !settings) {
             if (settingsModel) {
                 cb(null, settingsModel)
             } else {
-                // settingsModel = new Settings();
-                // settingsModel.save(cb);
+                settingsModel = new Settings();
+                settingsModel.save(cb);
             }
         } else {
             cb(null,settings);
