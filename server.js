@@ -18,7 +18,7 @@ var config = require(path.join(__dirname,'/config/config'));
 
 // Connect to database
 mongoose.Promise = global.Promise;
-await mongoose.connect(config.mongo.uri,function(error){
+mongoose.connect(config.mongo.uri,function(error){
     if (error) {
         console.log('********************************************');
         console.log('*          MongoDB Process not running     *');
