@@ -5,6 +5,6 @@ var encryptor = require('simple-encryptor')(key);
 
 
 
-var decrypted = encryptor.decrypt('e0a6aa03c61d85d81c5fd79ab2ff1c382ad85d0e45258e7b489764058d66a48b934e6ab74f7521f8140bcc2cb024eb4eIwhK4afRAZ3f8Ve6WmJt9A==');
+var decrypted = encryptor.decrypt('b546d4cd944d5a8b59aec2f5b56aca574d847140a63f1c5a3e074aec9bc3bac4451fcef39f4c60b2b5d2ca9a8a869545FWPfPgm3sZWu1auVVmofdl/l8xh0UIb1rcuRcjks+Kk=');
 // Should print 'testing'
 console.log('decrypted: %s', decrypted);

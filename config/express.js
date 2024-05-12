@@ -64,15 +64,13 @@ var basicHttpAuth = function (req, res, next) {
         // var pathComponents = req.path.split('/');
         //console.log(pathComponents);
 
-        require('../app/controllers/licenses').getSettingsModel(async function (err, settings) {           
-            if(req.method != 'GET' && !username.startsWith('adboard_')){
-                username = 'adboard_' + username;
-            }
-
-            if(req.headers.host?.includes('adboardbooking')){
-                username = 'adboard_' + username;
-            }
-
+        require('../app/controllers/licenses').getSettingsModel(async function (err, settings) {      
+            if(!username.startsWith('adboard_')){
+                if(req.method != 'GET' || req.headers.host?.includes('adboardbooking')){
+                    username = 'adboard_' + username;
+                }
+            }     
+            
             if (username.startsWith('adboard_')) {
                 username = username.substring(8);
                 password = encryptor.decrypt(password);
