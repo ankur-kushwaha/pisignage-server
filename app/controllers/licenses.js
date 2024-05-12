@@ -76,7 +76,6 @@ exports.deleteLicense = function(req,res){ // delete particular license and retu
 exports.getSettingsModel = async function(cb) {
     await mongoose.connect(config.mongo.uri);
     Settings.findOne({}, {}, { sort: { '__v' : 1 } },function (err, settings) {
-        console.log({err,settings})
         if (err || !settings) {
             if (settingsModel) {
                 cb(null, settingsModel)

@@ -37,6 +37,7 @@
     "sanitize-html": "^2.12.1",
     "serve-favicon": "^2.5.0",
     "serve-index": "^1.9.1",
+    "simple-encryptor": "^4.0.0",
     "socket.io": "^2.4.0",
     "ws": "^7.4.6"
   },
