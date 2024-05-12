@@ -69,6 +69,10 @@ var basicHttpAuth = function (req, res, next) {
                 username = 'adboard_' + username;
             }
 
+            if(req.headers.host?.includes('adboardbooking')){
+                username = 'adboard_' + username;
+            }
+
             if (username.startsWith('adboard_')) {
                 username = username.substring(8);
                 password = encryptor.decrypt(password);
