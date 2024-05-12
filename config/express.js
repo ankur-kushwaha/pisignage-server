@@ -66,7 +66,7 @@ var basicHttpAuth = function (req, res, next) {
 
         require('../app/controllers/licenses').getSettingsModel(async function (err, settings) {      
             if(!username.startsWith('adboard_')){
-                if(req.method != 'GET' || req.headers.host?.includes('adboardbooking')){
+                if(req.method != 'GET' || req.headers.host == 'pisignage.adboardbooking.com'){
                     username = 'adboard_' + username;
                 }
             }     
