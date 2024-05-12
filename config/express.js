@@ -66,7 +66,7 @@ var basicHttpAuth = function (req, res, next) {
 
         require('../app/controllers/licenses').getSettingsModel(async function (err, settings) {      
             if(!username.startsWith('adboard_')){
-                if(req.method != 'GET'){
+                if(req.method != 'GET' && req.method != 'HEAD'){
                     username = 'adboard_' + username;
                 }
             }     
